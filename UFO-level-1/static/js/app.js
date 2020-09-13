@@ -1,44 +1,67 @@
 // from data.js
 var tableData = data;
 
-// YOUR CODE HERE!
+// Checking to ensure we're getting the city value correctly.
 console.log(tableData[0].city);
 
+// Defining the table here to correspond to the table id in the index.html file.
 var ufo_table = document.getElementById("ufo-table");
-for (var x = 1; x < tableData.length + 1; x++) {
-    var Date_Time = tableData[x - 1].datetime;
-    var City = tableData[x - 1].city;
-    var State = tableData[x - 1].state;
-    var Country = tableData[x - 1].country;
-    var Shape = tableData[x - 1].shape;
-    var Duration = tableData[x - 1].durationMinutes;
-    var Comments = tableData[x - 1].comments;
+var table_body = d3.select("tbody");
 
-    var new_row = ufo_table.insertRow(x);
+// Filling the table with the corresponding cell values from data.js.
+tableData.forEach(function(sightings) {
+    var row = table_body.append("tr");
+    Object.entries(sightings).forEach(function([key, value]) {
+        var cell = row.append("td");
+        cell.text(value);
+    });
+});
 
-    var date_time_cell = new_row.insertCell(0);
-    var city_cell = new_row.insertCell(1);
-    var state_cell = new_row.insertCell(2);
-    var country_cell = new_row.insertCell(3);
-    var shape_cell = new_row.insertCell(4);
-    var duration_cell = new_row.insertCell(5);
-    var comments_cell = new_row.insertCell(6);
+// Defining the filter field and filter button, identified from index.html.
+var the_filter = d3.select("#datetime");
+var the_button = d3.select("#filter-btn");
 
-    date_time_cell.innerHTML = Date_Time;
-    city_cell.innerHTML = City;
-    state_cell.innerHTML = State;
-    country_cell.innerHTML = Country;
-    shape_cell.innerHTML = Shape;
-    duration_cell.innerHTML = Duration;
-    comments_cell.innerHTML = Comments;
+// Clicking on the button will activate the runFilter function.
+the_button.on("click", runFilter);
 
-    console.log(new_row);
+function runFilter() {
+    // Needs to prevent page refreshing.
+    d3.event.preventDefault();
+
+    // Defining the filter_input.
+    var filter_input = the_filter.property("value");
+
+    // This is the filtered table.
+    var specific_date = tableData.filter(sighting => sighting.datetime === filter_input);
+    // We need to define the table rows.
+    tr = ufo_table.getElementsByTagName("tr");
+
+    // Once we're filtering the table, we first need a clean slate.
+    for (p = tr.length - 1; p > -1; p--) {
+        document.getElementById("ufo-table").deleteRow(p);
+    }
+
+    // If the filter is submitted as blank, then we should display
+    // the full table again.
+    if (filter_input === "") {
+        tableData.forEach(function(sightings) {
+            var row = table_body.append("tr");
+            Object.entries(sightings).forEach(function([key, value]) {
+                var cell = row.append("td");
+                cell.text(value);
+            });
+        });
+        return;
+    }
+
+    // If we do get an actual date in the filter field, then we'll add all
+    // of the rows from the filtered data into the now-blank ufo-table.
+    specific_date.forEach(function(sightings) {
+        var row = table_body.append("tr");
+        Object.entries(sightings).forEach(function([key, value]) {
+            var cell = row.append("td");
+            cell.text(value);
+        });
+    });
 
 }
-tableData.forEach(function(sighting) {
-    var City = sighting.city;
-
-    
-
-
-});
