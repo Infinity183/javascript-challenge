@@ -9,4 +9,4 @@ UFO sightings that match all of the criteria (which can be left as blank) will d
 
 I have designed this code so that the table may restore the filtered rows if the user removes the filter and clicks Filter Table again.
 
-UFO-level-2 is the bonus task, in which I expanded the filtering fields to include more than just the date of the sighting. In this case, the filtering criteria uses multiple conditions.
+UFO-level-2 is the bonus task, in which I expanded the filtering fields to include more than just the date of the sighting. In this case, the filtering criteria uses multiple conditions. Additionally, I added extra form-control list items in the index.html file that correspond to the respective field's input.
